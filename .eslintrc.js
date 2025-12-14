@@ -2,12 +2,18 @@ module.exports = {
   "env": {
     "browser": true,
     "es6": true,
+    "node": true,
     "jest/globals": true
   },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended"
   ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -21,11 +27,10 @@ module.exports = {
   "rules": {
     "indent": [
       "error",
-        2
-      ],
+      2
+    ],
     "linebreak-style": [
-      "error",
-      "unix"
+      "off"
     ],
     "quotes": [
       "error",
