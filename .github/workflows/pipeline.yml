@@ -37,3 +37,8 @@ jobs:
       - name: e2e tests
         run: npm run test:e2e
 
+      - name: Trigger Render deploy
+        if: github.ref == 'refs/heads/main'
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+
