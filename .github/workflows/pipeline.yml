@@ -68,7 +68,7 @@ jobs:
   tag_release:
     needs: [lint]
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.lint.outputs.should_deploy == 'true'  }}
     steps:
       - name: Checkout code (full history for tags)
         uses: actions/checkout@v4
