@@ -10,6 +10,10 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+
+    outputs:
+      should_deploy: ${{ steps.skip_check.outputs.should_deploy }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -38,8 +42,26 @@ jobs:
       - name: e2e tests
         run: npm run test:e2e
 
+      - name: Check 
+        id: skip_check
+        run: |
+          echo "Commit messages:"
+          echo '${{ toJson(github.event.commits.*.message) }}'
+
+          if [[ "${{ github.event_name }}" != "push" ]]; then
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          ALL_MSGS="${{ join(github.event.commits.*.message, ' ') }}"
+          if echo "$ALL_MSGS" | grep -q "#skip"; then
+            echo "should_deploy=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_deploy=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Trigger Render deploy
-        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.skip_check.outputs.should_deploy == 'true' }}
         run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
 
 
