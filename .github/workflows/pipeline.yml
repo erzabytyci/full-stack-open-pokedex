@@ -42,7 +42,7 @@ jobs:
       - name: e2e tests
         run: npm run test:e2e
 
-      - name: Check 
+      - name: Check  
         id: skip_check
         run: |
           echo "Commit messages:"
