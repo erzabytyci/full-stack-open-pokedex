@@ -88,11 +88,11 @@ jobs:
     steps:
       - name: Notify Discord on success (deploy)
         if: ${{ needs.lint.result == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.lint.outputs.should_deploy == 'true' }}
-        uses: rjstone/discord-webhook-notify@v2
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-          severity: info
-          details: |
+          args: >
             A new version of Pokedex deployed
             Repo: ${{ github.repository }}
             Branch: ${{ github.ref_name }}
@@ -103,11 +103,11 @@ jobs:
 
       - name: Notify Discord on failure
         if: ${{ needs.lint.result != 'success' }}
-        uses: rjstone/discord-webhook-notify@v2
+        uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-          severity: error
-          details: |
+          args: >
             BUILD / DEPLOY FAILED
             Repo: ${{ github.repository }}
             Branch: ${{ github.ref_name }}
