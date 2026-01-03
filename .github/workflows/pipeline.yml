@@ -88,7 +88,7 @@ jobs:
     steps:
       - name: Notify Discord on success (deploy)
         if: ${{ needs.lint.result == 'success' && github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.lint.outputs.should_deploy == 'true' }}
-        uses: rjstone/discord-webhook-notify@v1
+        uses: rjstone/discord-webhook-notify@v2
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           severity: info
@@ -103,7 +103,7 @@ jobs:
 
       - name: Notify Discord on failure
         if: ${{ needs.lint.result != 'success' }}
-        uses: rjstone/discord-webhook-notify@v1
+        uses: rjstone/discord-webhook-notify@v2
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           severity: error
