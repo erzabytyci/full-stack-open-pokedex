@@ -1,0 +1,21 @@
+name: Periodic health check
+
+on:
+  push:
+    branches: [main]
+
+  schedule:
+    - cron: '0 6 * * *'   
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check that the app is responding
+        uses: jtalk/url-health-check-action@v4
+        with:
+          url: https://full-stack-open-pokedex-dtbk.onrender.com/health
+          max-attempts: 3
+          retry-delay: 10
+          retry-all: true
