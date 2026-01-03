@@ -17,5 +17,5 @@ jobs:
         with:
           url: https://full-stack-open-pokedex-dtbk.onrender.com/health
           max-attempts: 3
-          retry-delay: 10
+          retry-delay: 10s
           retry-all: true
